@@ -57,7 +57,7 @@ exports.register = function(server, options, next) {
       //Create an id
       jedi._id = uuid.v1();
 
-      jedis.save(book, (err, result) => {
+      jedis.save(jedi, (err, result) => {
 
         if (err) {
           return reply(Boom.badData('Internal Mongodb error', err));

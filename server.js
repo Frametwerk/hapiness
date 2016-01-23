@@ -16,7 +16,7 @@ server.app.db = mongojs('hapi-rest-mongo');//Adding db plugin
 
 //Load plugins and start server
 server.register([
-  require('./routes/books')
+  require('./routes/jedis_routes')
 ], (err) => {
 
   if (err) {
