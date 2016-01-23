@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
+const mongojs = require('mongojs');//adding mongojs
 const errorHandle = require(__dirname + '/lib/error-handle');
 
 //Create a server with a host and port
@@ -9,6 +10,9 @@ server.connection({
   host: 'localhost',
   port: 3000
 });
+
+//Connect to db
+server.app.db = mongojs('hapi-rest-mongo');//Adding db plugin
 
 //Add a route
 server.route({
