@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('hapi');
+const mongojs = require('mongojs');//adding mongojs
 const errorHandle = require(__dirname + '/lib/error-handle');
 
 //Create a server with a host and port
@@ -10,19 +11,21 @@ server.connection({
   port: 3000
 });
 
-//Add a route
-server.route({
-  method: 'GET',
-  path: '/jedis',
-  handler: function(request, reply) {
-    return reply('Hello World!')
-  }
-});
+//Connect to db
+server.app.db = mongojs('hapi-rest-mongo');//Adding db plugin
 
-//Starts the server
-server.start((err) => {
+//Load plugins and start server
+server.register([
+  require('./routes/jedis_routes')
+], (err) => {
+
   if (err) {
     throw err;
   }
-  console.log('Server up at:', server.info.uri);
+
+  //Starts the server
+  server.start((err) => {
+    console.log('Server up at:', server.info.uri);
+  });
+
 });
