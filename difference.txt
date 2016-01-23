@@ -1,0 +1,5 @@
+Built in functions of finding within hapi.
+
+Seems much easier to read and the documentation is fairly well laid out.
+
+We like the built in errors.
