@@ -14,19 +14,18 @@ server.connection({
 //Connect to db
 server.app.db = mongojs('hapi-rest-mongo');//Adding db plugin
 
-//Add a route
-server.route({
-  method: 'GET',
-  path: '/jedis',
-  handler: function(request, reply) {
-    return reply('Hello World!')
-  }
-});
+//Load plugins and start server
+server.register([
+  require('./routes/books')
+], (err) => {
 
-//Starts the server
-server.start((err) => {
   if (err) {
     throw err;
   }
-  console.log('Server up at:', server.info.uri);
+
+  //Starts the server
+  server.start((err) => {
+    console.log('Server up at:', server.info.uri);
+  });
+
 });
