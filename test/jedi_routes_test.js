@@ -3,14 +3,14 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const expect = chai.expect;
 process.env.MONGOLABL_URI = 'mongodb://localhost/jedis_app_test';
-const server = require(__dirname + '/../server');
 const request = chai.request;
+require(__dirname + '/../server.js');
 
 describe('The Jedis API', () => {
 
   it('should be able to retrieve all jedis', (done) => {
     request('localhost:3000')
-      .get('/api/jedis')
+      .get('/jedis')
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
@@ -21,49 +21,26 @@ describe('The Jedis API', () => {
 
   it('should create a jedi with a POST', (done) => {
     request('localhost:3000')
-      .post('/api/jedis')
-      .send({name: 'test-jin'})
+      .post('/jedis')
+      .send({name: 'test-jesse',lightsaberColor: 'purple'})
       .end((err, res) => {
         expect(err).to.eql(null);
         expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('test-jin');
+        expect(res.body.name).to.eql('test-jesse');
         expect(res.body).to.have.property('_id');
         done();
       });
   });
 
-  describe('rest requests that require a jedi already in db', () => {
-
-    beforeEach((done) => {
-      Jedi.create({name: 'test-beforeeach'}, (err, data) => {
-        this.testJedi = data;
+  it('should find one specific jedi', (done) => {
+    request('localhost:3000')
+      .get('/jedis/65d17700-c21b-11e5-942c-85d3edd309fd')
+      .end((err, res) => {
+        expect(err).to.eql(null);
+        expect(res).to.have.status(200);
+        expect(res.body.name).to.eql('test-jin');
         done();
       });
-    });
-
-    it('shoud be able to update a jedi', (done) => {
-      request('localhost:3000')
-        .put('/api/jedis/' + this.testJedi._id)
-        .send({name: 'new-test-beforeeach'})
-        .end((err, res) => {
-          expect(err).to.eql(null);
-          expect(res).to.have.status(200);
-          expect(res.body.msg).to.eql('success');
-          done();
-        });
-    });
-
-    it('should be able to delete a jedi', (done) => {
-      request('localhost:3000')
-        .delete('/api/jedis/' + this.testJedi._id)
-        .end((err, res) => {
-          expect(err).to.eql(null);
-          expect(res).to.have.status(200);
-          expect(res.body.msg).to.eql('success');
-          done();
-        });
-    });
-
   });
 
 });
