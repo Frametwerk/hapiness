@@ -32,15 +32,4 @@ describe('The Jedis API', () => {
       });
   });
 
-  it('should find one specific jedi', (done) => {
-    request('localhost:3000')
-      .get('/jedis/65d17700-c21b-11e5-942c-85d3edd309fd')
-      .end((err, res) => {
-        expect(err).to.eql(null);
-        expect(res).to.have.status(200);
-        expect(res.body.name).to.eql('test-jin');
-        done();
-      });
-  });
-
 });
