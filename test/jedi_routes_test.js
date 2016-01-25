@@ -6,7 +6,6 @@ process.env.MONGOLABL_URI = 'mongodb://localhost/jedis_app_test';
 const request = chai.request;
 require(__dirname + '/../server.js');
 
-
 describe('The Jedis API', () => {
 
   it('should be able to retrieve all jedis', (done) => {
